@@ -50,16 +50,16 @@
     list-style: none;
 
     display: flex;
-    gap: 2px;
   }
 
   .colorCircle {
     cursor: pointer;
 
-    font-size: 0.8rem;
+    font-family: monospace;
+    font-size: 0.75rem;
 
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     border-radius: 50%;
 
     color: white;
