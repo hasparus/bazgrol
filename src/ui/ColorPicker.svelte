@@ -3,7 +3,7 @@
 
   import { colors } from "../lib/colors";
 
-  import { drawingStore } from "../lib/drawingStore";
+  import { drawingStore, userStore } from "../lib/drawingStore";
 
   // prettier-ignore
   const colorShortcuts = [
@@ -37,7 +37,7 @@
         on:click={() => {
           drawingStore.dispatch({ t: "SELECTED_COLOR", color });
         }}
-        aria-selected={$drawingStore.currentColor === color}
+        aria-selected={$userStore.currentColor === color}
       >
         {colorShortcuts[i]}
       </button>

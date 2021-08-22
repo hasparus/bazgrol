@@ -15,9 +15,24 @@ export interface PointWithPressure extends Point {
   pressure?: number | undefined;
 }
 
+/**
+ * GunDB doesn't like arrays
+ */
+type NumberDict<T> = Record<number, T> & { length: number };
+export const NumberDict = {
+  empty: () => ({ length: 0 }),
+  of: <T>(x: T) => ({ length: 1, 0: x }),
+  toArray: <T>(dict: NumberDict<T>): T[] => Array.from(dict),
+  append: <T>(dict: NumberDict<T>, x: T): NumberDict<T> => ({
+    ...dict,
+    length: dict.length + 1,
+    [dict.length]: x,
+  }),
+};
+
 export interface Mark {
   id: string;
-  points: PointWithPressure[];
+  points: NumberDict<PointWithPressure>;
   color: string;
   complete?: boolean;
 }
@@ -37,3 +52,5 @@ export interface ClipboardMessage {
   error: boolean;
   message: string;
 }
+
+export type Uuid = string;

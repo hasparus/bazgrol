@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from "svelte";
 
-  import { cursor } from "./lib/stores";
+  import { cursor } from "./lib/cursorStore";
   import { drawingStore } from "./lib/drawingStore";
   import { registerEvents } from "./lib/pointer";
 
@@ -36,12 +36,14 @@
     on:touchmove={pointer.onTouch}
     on:touchend={pointer.onTouch}
   >
-    {#each $drawingStore.marks as mark (mark.id)}
+    {#each Object.values($drawingStore.marks) as mark (mark.id)}
       <MarkPath {mark} />
     {/each}
-    {#if $drawingStore.currentMark}
-      <MarkPath mark={$drawingStore.currentMark} />
-    {/if}
+    {#each Object.values($drawingStore.users) as user}
+      {#if user.currentMark}
+        <MarkPath mark={user.currentMark} />
+      {/if}
+    {/each}
   </svg>
   <pre>
     {JSON.stringify({ x: $cursor.x, y: $cursor.y }, null, 2)}
