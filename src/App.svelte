@@ -6,6 +6,7 @@
   import { registerEvents } from "./lib/pointer";
 
   import ColorPicker from "./ui/ColorPicker.svelte";
+  import MarkPath from "./ui/MarkPath.svelte";
 
   const pointer = registerEvents(drawingStore.dispatch);
 
@@ -36,13 +37,10 @@
     on:touchend={pointer.onTouch}
   >
     {#each $drawingStore.marks as mark (mark.id)}
-      <path d={mark.path} fill={mark.color} />
+      <MarkPath {mark} />
     {/each}
     {#if $drawingStore.currentMark}
-      <path
-        d={$drawingStore.currentMark.path}
-        fill={$drawingStore.currentMark.color}
-      />
+      <MarkPath mark={$drawingStore.currentMark} />
     {/if}
   </svg>
   <pre>

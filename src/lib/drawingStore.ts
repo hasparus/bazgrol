@@ -46,7 +46,6 @@ export const drawingStore = (() => {
         const currentMark: Mark = {
           id: uuid(),
           points,
-          path: getStrokePath(points),
           color: s.currentColor,
         };
 
@@ -72,7 +71,6 @@ export const drawingStore = (() => {
             id: currentMark.id,
             color: currentMark.color,
             points,
-            path: getStrokePath(points),
           },
         };
       }
@@ -87,7 +85,7 @@ export const drawingStore = (() => {
             ...s.marks,
             {
               ...currentMark,
-              path: getStrokePath(currentMark.points, PATH_COMPLETE),
+              complete: true,
             },
           ],
         };

@@ -53,6 +53,7 @@
   }
 
   .colorCircle {
+    outline: none;
     cursor: pointer;
 
     font-family: monospace;

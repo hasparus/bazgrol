@@ -18,8 +18,8 @@ export interface PointWithPressure extends Point {
 export interface Mark {
   id: string;
   points: PointWithPressure[];
-  path: string;
   color: string;
+  complete?: boolean;
 }
 
 export interface Pointer extends Point {

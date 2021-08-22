@@ -4,7 +4,6 @@ import { map } from "rambdax";
 import type { Writable } from "svelte/store";
 import { writable } from "svelte/store";
 
-import { makeGlobal } from "./debug";
 import type { IGunChainReference } from "./gun";
 import { gun } from "./gun";
 
