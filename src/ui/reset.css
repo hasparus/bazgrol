@@ -1,0 +1,82 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  margin: 0;
+  line-height: 1;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+mark {
+  background-color: transparent;
+  color: inherit;
+}
+
+select,
+textarea,
+input {
+  display: block;
+  appearance: none;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+input::ms-clear {
+  display: none;
+}
+input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+
+button {
+  background: none;
+}
