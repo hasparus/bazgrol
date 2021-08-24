@@ -2,8 +2,7 @@
   import { onMount } from "svelte";
 
   import { colors } from "../lib/colors";
-
-  import { drawingStore, userStore } from "../lib/drawingStore";
+  import { currentUserStore, dispatch } from "../lib/stores";
 
   // prettier-ignore
   const colorShortcuts = [
@@ -16,7 +15,7 @@
     const onKeydown = (event: KeyboardEvent) => {
       const index = colorShortcuts.indexOf(event.key);
       if (index !== -1) {
-        drawingStore.dispatch({ t: "SELECTED_COLOR", color: colors[index] });
+        dispatch({ t: "SELECTED_COLOR", color: colors[index] });
       }
     };
 
@@ -32,12 +31,12 @@
     <li>
       <button
         aria-label={`Pick color ${colorShortcuts[i]}`}
-        class="colorCircle"
+        class="color-circle"
         style={`background-color: ${color}`}
         on:click={() => {
-          drawingStore.dispatch({ t: "SELECTED_COLOR", color });
+          dispatch({ t: "SELECTED_COLOR", color });
         }}
-        aria-selected={$userStore.currentColor === color}
+        aria-selected={$currentUserStore.currentColor === color}
       >
         {colorShortcuts[i]}
       </button>
@@ -52,7 +51,7 @@
     display: flex;
   }
 
-  .colorCircle {
+  .color-circle {
     outline: none;
     cursor: pointer;
 
@@ -71,14 +70,14 @@
     opacity: 0.9;
   }
 
-  .colorCircle:hover,
-  .colorCircle:focus {
+  .color-circle:hover,
+  .color-circle:focus {
     border-width: 1px;
   }
-  .colorCircle:active {
+  .color-circle:active {
     border-width: 0px;
   }
-  .colorCircle[aria-selected="true"] {
+  .color-circle[aria-selected="true"] {
     border-width: 0px;
     opacity: 1;
   }

@@ -1,4 +1,4 @@
-import type { Dispatch } from "./drawingStore";
+import type { Dispatch } from "./stores";
 import type { Keys, Pointer } from "./types";
 
 let first: number;

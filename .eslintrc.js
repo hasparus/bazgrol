@@ -8,8 +8,7 @@ module.exports = {
   extends: ["@hasparus"],
   ignorePatterns: ["*.js", "dist"],
   rules: {
-    "prefer-const": {
-      destructuring: "any",
-    },
+    "prefer-const": ["warn", { destructuring: "all" }],
   },
 };
+``;
