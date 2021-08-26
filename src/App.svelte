@@ -6,6 +6,7 @@
 
   import ColorPicker from "./ui/ColorPicker.svelte";
   import MarkPath from "./ui/MarkPath.svelte";
+  import UserCursors from "./ui/UserCursors.svelte";
   import UsersList from "./ui/UsersList.svelte";
 
   const pointer = registerEvents(dispatch);
@@ -37,6 +38,7 @@
       {/if}
     {/each}
   </svg>
+  <UserCursors />
   <pre>
     <!--  -->
   </pre>
@@ -52,6 +54,8 @@
   :root {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+
+    overflow: hidden;
   }
 
   pre {
@@ -69,6 +73,8 @@
     width: 100%;
     height: 100%;
     touch-action: none;
+
+    cursor: none;
   }
 
   .toolbar {

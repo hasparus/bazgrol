@@ -7,12 +7,11 @@
   };
 
   let currentUser: UserListItemData = {
-    color: UserState.get(userId).currentColor,
+    color: UserState.get().currentColor,
   };
   let otherUsers: UserListItemData[] = [];
 
   $: {
-    otherUsers = [];
     for (const [key, userData] of Object.entries($usersStore)) {
       const user = { color: userData.currentColor };
 

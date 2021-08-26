@@ -58,7 +58,7 @@ function hasPressure() {
   return pointer.type !== "pen" || pointer.p !== 0;
 }
 
-function handleTouchMove(e: TouchEvent) {
+function onTouch(e: TouchEvent) {
   e.preventDefault();
 }
 
@@ -132,7 +132,7 @@ export function registerEvents(dispatch: Dispatch) {
     onPointerMove: handlePointerMove(dispatch),
     onPointerDown: handlePointerDown(dispatch),
     onPointerUp: handlePointerUp(dispatch),
-    onTouch: handleTouchMove,
+    onTouch: onTouch,
     onMount,
   };
 }

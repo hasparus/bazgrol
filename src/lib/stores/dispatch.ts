@@ -3,7 +3,6 @@ import { v4 as uuid } from "uuid";
 
 import type { Keys, Pointer } from "../types";
 import { getPointer } from "../user-events";
-import { userId } from "../userId";
 
 import { MarksState } from "./marksStore";
 import { UserState } from "./usersStore";
@@ -21,59 +20,57 @@ export type Dispatch = (action: Action) => void;
 export const dispatch: Dispatch = (action): void => {
   switch (action.t) {
     case "DOWNED_POINTER": {
-      let { currentMark, currentColor } = UserState.get(userId);
+      UserState.update((state) => {
+        let { currentMark, currentColor } = state;
 
-      if (currentMark) return;
+        if (currentMark) return;
 
-      const { x, y, p } = getPointer();
+        const { x, y, p } = getPointer();
 
-      const points = [{ x, y, pressure: p }];
+        const points = [{ x, y, pressure: p }];
 
-      currentMark = {
-        id: uuid(),
-        points,
-        color: currentColor,
-      };
+        currentMark = {
+          id: uuid(),
+          points,
+          color: currentColor,
+        };
 
-      UserState.set(userId, { currentColor, currentMark });
-      return;
-    }
-    case "MOVED_POINTER": {
-      const { currentMark, currentColor } = UserState.get(userId);
-
-      if (!currentMark) return;
-
-      const pointer = getPointer();
-
-      UserState.set(userId, {
-        currentColor,
-        currentMark: {
-          id: currentMark.id,
-          color: currentMark.color,
-          points: [
-            ...currentMark.points,
-            {
-              x: pointer.x,
-              y: pointer.y,
-              pressure: pointer.p,
-            },
-          ],
-        },
+        return { currentColor, currentMark };
       });
       return;
     }
+    case "MOVED_POINTER": {
+      UserState.update((state) => {
+        const { currentMark } = state;
+
+        const pointer = getPointer();
+        const { x, y, p: pressure } = pointer;
+
+        if (currentMark) {
+          return {
+            cursorPosition: { x, y },
+            currentMark: {
+              id: currentMark.id,
+              color: currentMark.color,
+              points: [...currentMark.points, { x, y, pressure }],
+            },
+          };
+        } else {
+          return { cursorPosition: { x, y } };
+        }
+      });
+
+      return;
+    }
     case "LIFTED_POINTER": {
-      const state = UserState.get(userId);
+      const state = UserState.get();
       const { currentMark } = state;
 
       if (!currentMark) return;
 
-      UserState.set(userId, {
-        ...state,
-        currentMark: null,
-      });
-
+      UserState.set({ ...state, currentMark: null });
       MarksState.push({ ...currentMark, complete: true });
+
       return;
     }
     case "PRESSED_KEY": {
@@ -94,7 +91,7 @@ export const dispatch: Dispatch = (action): void => {
       return;
     }
     case "SELECTED_COLOR": {
-      UserState.update(userId, () => ({ currentColor: action.color }));
+      UserState.update(() => ({ currentColor: action.color }));
       return;
     }
     default:
