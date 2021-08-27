@@ -1,4 +1,5 @@
+[] Find new pointer icon
 [] Stop showing pencil cursor on focus loss
-[] Stop showing pencil cursor when pointer is above buttons
+[] Don't draw if button was pressed (the ink now "bleeds through" buttons)
 [] Select and remove marks
 [] When player disconnects, remove them from the list
