@@ -9,17 +9,23 @@ import { yDoc } from "../yjs";
 
 export interface UserState {
   currentMark: Mark | null;
-  currentColor: string;
-  cursorPosition?: Point;
+  color: string;
+  cursorPos?: Point;
+  activity: UserActivity;
 }
+
+export type UserActivity = "pencil" | "pointer" | "grab";
 
 const usersYMap = yDoc.getMap("usersData") as Yjs.Map<UserState>;
 
+const defaultUserState: UserState = {
+  currentMark: null,
+  color: colors[0],
+  activity: "pointer",
+};
+
 export const UserState = {
-  default: {
-    currentMark: null,
-    currentColor: colors[0],
-  },
+  default: defaultUserState,
   get: (): UserState => {
     return usersYMap.get(userId) || UserState.default;
   },

@@ -4,10 +4,10 @@
   import { dispatch, marksStore, usersStore } from "./lib/stores";
   import { registerEvents } from "./lib/user-events";
 
-  import ColorPicker from "./ui/ColorPicker.svelte";
   import MarkPath from "./ui/MarkPath.svelte";
   import UserCursors from "./ui/UserCursors.svelte";
   import UsersList from "./ui/UsersList.svelte";
+  import Toolbar from "./ui/Toolbar.svelte";
 
   const pointer = registerEvents(dispatch);
 
@@ -22,9 +22,6 @@
 
 <main>
   <svg
-    on:pointerdown={pointer.onPointerDown}
-    on:pointermove={pointer.onPointerMove}
-    on:pointerup={pointer.onPointerUp}
     on:touchstart={pointer.onTouch}
     on:touchmove={pointer.onTouch}
     on:touchend={pointer.onTouch}
@@ -42,9 +39,7 @@
   <pre>
     <!--  -->
   </pre>
-  <section class="toolbar">
-    <ColorPicker />
-  </section>
+  <Toolbar />
   <div class="top-right">
     <UsersList />
   </div>
@@ -75,18 +70,6 @@
     touch-action: none;
 
     cursor: none;
-  }
-
-  .toolbar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 4em;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
   }
 
   .top-right {

@@ -5,15 +5,16 @@ import type { Keys, Pointer } from "../types";
 import { getPointer } from "../user-events";
 
 import { MarksState } from "./marksStore";
+import type { UserActivity } from "./usersStore";
 import { UserState } from "./usersStore";
 
 export type Action =
   | { t: "MOVED_POINTER"; pointer: Pointer; keys: Keys }
   | { t: "LIFTED_POINTER"; pointer: Pointer; keys: Keys }
   | { t: "DOWNED_POINTER"; pointer: Pointer; keys: Keys }
-  | { t: "PRESSED_KEY"; pointer: Pointer; keys: Keys; key: string }
   | { t: "RESIZED" }
-  | { t: "SELECTED_COLOR"; color: string };
+  | { t: "SELECTED_COLOR"; color: string }
+  | { t: "SET_ACTIVITY"; activity: UserActivity };
 
 export type Dispatch = (action: Action) => void;
 
@@ -21,7 +22,7 @@ export const dispatch: Dispatch = (action): void => {
   switch (action.t) {
     case "DOWNED_POINTER": {
       UserState.update((state) => {
-        let { currentMark, currentColor } = state;
+        let { currentMark, color: currentColor } = state;
 
         if (currentMark) return;
 
@@ -35,7 +36,7 @@ export const dispatch: Dispatch = (action): void => {
           color: currentColor,
         };
 
-        return { currentColor, currentMark };
+        return { color: currentColor, currentMark };
       });
       return;
     }
@@ -48,7 +49,7 @@ export const dispatch: Dispatch = (action): void => {
 
         if (currentMark) {
           return {
-            cursorPosition: { x, y },
+            cursorPos: { x, y },
             currentMark: {
               id: currentMark.id,
               color: currentMark.color,
@@ -56,7 +57,7 @@ export const dispatch: Dispatch = (action): void => {
             },
           };
         } else {
-          return { cursorPosition: { x, y } };
+          return { cursorPos: { x, y } };
         }
       });
 
@@ -73,25 +74,15 @@ export const dispatch: Dispatch = (action): void => {
 
       return;
     }
-    case "PRESSED_KEY": {
-      // console.log({ "action.key": action.key });
-
-      // switch (action.key) {
-      //   case 'a':
-      //     if (action.keys.shift) {
-
-      //     }
-      // }
-
-      // todo: ctrl+z to undo
-      // todo: ctrl+a to select all
-      return;
-    }
     case "RESIZED": {
       return;
     }
     case "SELECTED_COLOR": {
-      UserState.update(() => ({ currentColor: action.color }));
+      UserState.update(() => ({ color: action.color }));
+      return;
+    }
+    case "SET_ACTIVITY": {
+      UserState.update(() => ({ activity: action.activity }));
       return;
     }
     default:

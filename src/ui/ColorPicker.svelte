@@ -1,8 +1,11 @@
 <script lang="ts">
-  import { onMount } from "svelte";
+  import { createEventDispatcher } from "svelte";
 
   import { colors } from "../lib/colors";
   import { currentUserStore, dispatch } from "../lib/stores";
+  import { onKeydown } from "../lib/onKeydown";
+
+  import ToolbarButton from "./ToolbarButton.svelte";
 
   // prettier-ignore
   const colorShortcuts = [
@@ -11,37 +14,40 @@
     'a', 's', 'd', 'f', 'g',
   ]
 
-  onMount(() => {
-    const onKeydown = (event: KeyboardEvent) => {
-      const index = colorShortcuts.indexOf(event.key);
-      if (index !== -1) {
-        dispatch({ t: "SELECTED_COLOR", color: colors[index] });
-      }
-    };
+  const dispatchEvent = createEventDispatcher();
 
-    window.addEventListener("keydown", onKeydown);
-    return () => {
-      window.removeEventListener("keydown", onKeydown);
-    };
+  onKeydown((event: KeyboardEvent) => {
+    const index = colorShortcuts.indexOf(event.key);
+    if (index !== -1) {
+      dispatch({ t: "SELECTED_COLOR", color: colors[index] });
+    }
   });
 </script>
 
-<ul>
+<ul class="color-picker">
   {#each colors as color, i (color)}
     <li>
       <button
-        aria-label={`Pick color ${colorShortcuts[i]}`}
+        aria-label={`pick color ${colorShortcuts[i]}`}
         class="color-circle"
         style={`background-color: ${color}`}
         on:click={() => {
           dispatch({ t: "SELECTED_COLOR", color });
         }}
-        aria-selected={$currentUserStore.currentColor === color}
+        aria-selected={$currentUserStore.color === color}
       >
         {colorShortcuts[i]}
       </button>
     </li>
   {/each}
+  <ToolbarButton
+    aria-label="return to toolbar"
+    class="back-to-toolbar"
+    on:click={() => dispatchEvent("close")}
+    shortcut="Esc"
+  >
+    T
+  </ToolbarButton>
 </ul>
 
 <style>
@@ -80,5 +86,9 @@
   .color-circle[aria-selected="true"] {
     border-width: 0px;
     opacity: 1;
+  }
+
+  .color-picker :global(.back-to-toolbar) {
+    margin-left: 4px;
   }
 </style>

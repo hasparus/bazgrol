@@ -70,13 +70,13 @@ const handlePointerMove = (dispatch: Dispatch) => (e: PointerEvent) => {
 
 const handlePointerUp = (dispatch: Dispatch) => (e: PointerEvent) => {
   updatePointer(e);
-  (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+  (e.target as HTMLElement).releasePointerCapture(e.pointerId);
   dispatch({ t: "LIFTED_POINTER", pointer, keys });
 };
 
 const handlePointerDown = (dispatch: Dispatch) => (e: PointerEvent) => {
   e.preventDefault();
-  (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+  (e.target as HTMLElement).setPointerCapture(e.pointerId);
 
   if (pointerIds.size === 0) first = e.pointerId;
 
@@ -95,18 +95,6 @@ export function registerEvents(dispatch: Dispatch) {
   const onMount = () => {
     if (typeof window === "undefined") return () => {};
 
-    function handleKeydown(e: KeyboardEvent) {
-      keys.shift = e.shiftKey;
-      keys.meta = e.metaKey;
-      keys.alt = e.altKey;
-      dispatch({
-        t: "PRESSED_KEY",
-        pointer,
-        keys,
-        key: e.key,
-      });
-    }
-
     function handleKeyup(e: KeyboardEvent) {
       keys.shift = e.shiftKey;
       keys.meta = e.metaKey;
@@ -117,21 +105,28 @@ export function registerEvents(dispatch: Dispatch) {
       dispatch({ t: "RESIZED" });
     }
 
-    window.addEventListener("keydown", handleKeydown);
     window.addEventListener("keyup", handleKeyup);
     window.addEventListener("resize", handleResize);
 
+    const onPointerMove = handlePointerMove(dispatch);
+    const onPointerDown = handlePointerDown(dispatch);
+    const onPointerUp = handlePointerUp(dispatch);
+
+    window.addEventListener("pointermove", onPointerMove);
+    window.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
+
     return () => {
-      window.removeEventListener("keydown", handleKeydown);
       window.removeEventListener("keyup", handleKeyup);
       window.removeEventListener("resize", handleResize);
+
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerdown", onPointerDown);
+      window.removeEventListener("pointerup", onPointerUp);
     };
   };
 
   return {
-    onPointerMove: handlePointerMove(dispatch),
-    onPointerDown: handlePointerDown(dispatch),
-    onPointerUp: handlePointerUp(dispatch),
     onTouch: onTouch,
     onMount,
   };

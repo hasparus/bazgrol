@@ -25,14 +25,14 @@
     "svelte-check": "^2.1.0",
     "svelte-preprocess": "^4.7.2",
     "tslib": "^2.2.0",
-    "typescript": "^4.3.2",
+    "typescript": "^4.4",
     "vite": "^2.3.7"
   },
   "dependencies": {
     "@types/uuid": "^8.3.1",
-    "gun": "^0.2020.1232",
     "perfect-freehand": "^0.4.10",
     "rambdax": "^7.4.1",
+    "sass": "^1.38.1",
     "ts-essentials": "^8.0.0",
     "uuid": "^8.3.2",
     "y-webrtc": "^10.2.0",

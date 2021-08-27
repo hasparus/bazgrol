@@ -3,17 +3,17 @@
   import { userId } from "../lib/userId";
 
   type UserListItemData = {
-    color: UserState["currentColor"];
+    color: UserState["color"];
   };
 
   let currentUser: UserListItemData = {
-    color: UserState.get().currentColor,
+    color: UserState.get().color,
   };
   let otherUsers: UserListItemData[] = [];
 
   $: {
     for (const [key, userData] of Object.entries($usersStore)) {
-      const user = { color: userData.currentColor };
+      const user = { color: userData.color };
 
       if (key === userId) {
         currentUser = user;

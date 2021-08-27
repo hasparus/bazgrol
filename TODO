@@ -1,2 +1,4 @@
+[] Stop showing pencil cursor on focus loss
+[] Stop showing pencil cursor when pointer is above buttons
 [] Select and remove marks
 [] When player disconnects, remove them from the list
