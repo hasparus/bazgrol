@@ -1,3 +1,4 @@
+import { miniStore } from "./miniEmitter";
 import type { Dispatch } from "./stores";
 import type { Keys, Pointer } from "./types";
 
@@ -16,6 +17,8 @@ const pointer: Pointer = {
   p: 0,
   type: "mouse",
 };
+
+export const pointerStore = miniStore(pointer);
 
 const keys: Keys = {
   shift: false,
@@ -51,6 +54,9 @@ function updatePointer(e: PointerEvent) {
   keys.meta = e.metaKey;
   keys.alt = e.altKey;
 
+  // Nobody needs it yet.
+  // pointerStore.emit(pointer);
+
   return true;
 }
 
@@ -62,7 +68,10 @@ function onTouch(e: TouchEvent) {
   e.preventDefault();
 }
 
-// Note: We can disable browser zoom and handle it ourselves, but it's not something we need really much, and it complicates other things.
+// Note: We can disable browser zoom and handle it ourselves, but it's not
+// something we need really much, and it complicates other things.
+// Gain: Toolbar would always be visible.
+// Loss: We have to tranform the pointer coordinates to match the zoom and pan.
 //
 // /**
 //  * @see https://kenneth.io/post/detecting-multi-touch-trackpad-gestures-in-javascript
@@ -109,7 +118,9 @@ const handlePointerDown = (dispatch: Dispatch) => (e: PointerEvent) => {
   e.preventDefault();
   (e.target as HTMLElement).setPointerCapture(e.pointerId);
 
-  if (pointerIds.size === 0) first = e.pointerId;
+  if (pointerIds.size === 0) {
+    first = e.pointerId;
+  }
 
   pointerIds.add(e.pointerId);
 
@@ -140,7 +151,6 @@ export function registerEvents(dispatch: Dispatch) {
 
     return () => {
       window.removeEventListener("keyup", handleKeyup);
-      //
 
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onPointerMove);
@@ -157,4 +167,8 @@ export function registerEvents(dispatch: Dispatch) {
 
 export function getPointer(): Pointer {
   return pointer;
+}
+
+export function getKeys(): Keys {
+  return keys;
 }

@@ -22,7 +22,13 @@ export const dispatch: Dispatch = (action): void => {
   switch (action.t) {
     case "DOWNED_POINTER": {
       UserState.update((state) => {
-        let { currentMark, color: currentColor } = state;
+        let { currentMark, color: currentColor, activity } = state;
+
+        if (activity === "pointer") {
+          // todo: selection
+          alert("selection is not implemented yet");
+          return;
+        }
 
         if (currentMark) return;
 

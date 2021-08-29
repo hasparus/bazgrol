@@ -7,7 +7,7 @@
   import ColorPicker from "./ColorPicker.svelte";
   import IconSvg from "./icons/IconSvg.svelte";
   import PencilPath from "./icons/PencilPath.svelte";
-  import PointerPath from "./icons/PointerPath.svelte";
+  import PointerPathClicking from "./icons/PointerPathClicking.svelte";
 
   import ToolbarButton from "./ToolbarButton.svelte";
 
@@ -55,7 +55,7 @@
           aria-selected={activity === "pointer"}
         >
           <IconSvg>
-            <PointerPath />
+            <PointerPathClicking />
           </IconSvg>
         </ToolbarButton>
       </li>

@@ -22,6 +22,7 @@
 
 <main>
   <svg
+    id="canvas"
     on:touchstart={pointer.onTouch}
     on:touchmove={pointer.onTouch}
     on:touchend={pointer.onTouch}
@@ -61,7 +62,7 @@
     user-select: none;
   }
 
-  svg {
+  #canvas {
     position: absolute;
     top: 0;
     left: 0;
