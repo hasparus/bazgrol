@@ -15,6 +15,7 @@
   <IconSvg
     style={`transform: translate3d(calc(${user.cursorPos.x}px - 2px), calc(${user.cursorPos.y}px - 20px), 0)`}
     stroke={user.color}
+    class="UserCursor-cursor"
   >
     {#if user.activity === "pencil"}
       <PencilPath />
@@ -26,7 +27,7 @@
 {/if}
 
 <style>
-  svg {
+  :global(.UserCursor-cursor) {
     pointer-events: none;
   }
 </style>

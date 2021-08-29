@@ -62,6 +62,37 @@ function onTouch(e: TouchEvent) {
   e.preventDefault();
 }
 
+// Note: We can disable browser zoom and handle it ourselves, but it's not something we need really much, and it complicates other things.
+//
+// /**
+//  * @see https://kenneth.io/post/detecting-multi-touch-trackpad-gestures-in-javascript
+//  */
+// function onWheel(e: WheelEvent) {
+//   e.preventDefault();
+
+//   console.log("onWheel", {
+//     deltaX: e.deltaX,
+//     deltaY: e.deltaY,
+//     deltaZ: e.deltaZ,
+//   });
+
+//   // if (e.ctrlKey) {
+//   // } else {
+//   // }
+// }
+//     // window.addEventListener("wheel", onWheel, { passive: false });
+//     // window.removeEventListener("wheel", onWheel);
+
+function handleKeyup(e: KeyboardEvent) {
+  keys.shift = e.shiftKey;
+  keys.meta = e.metaKey;
+  keys.alt = e.altKey;
+}
+
+const handleResize = (dispatch: Dispatch) => () => {
+  dispatch({ t: "RESIZED" });
+};
+
 const handlePointerMove = (dispatch: Dispatch) => (e: PointerEvent) => {
   if (updatePointer(e) && hasPressure()) {
     dispatch({ t: "MOVED_POINTER", pointer, keys });
@@ -95,31 +126,23 @@ export function registerEvents(dispatch: Dispatch) {
   const onMount = () => {
     if (typeof window === "undefined") return () => {};
 
-    function handleKeyup(e: KeyboardEvent) {
-      keys.shift = e.shiftKey;
-      keys.meta = e.metaKey;
-      keys.alt = e.altKey;
-    }
-
-    function handleResize() {
-      dispatch({ t: "RESIZED" });
-    }
-
     window.addEventListener("keyup", handleKeyup);
-    window.addEventListener("resize", handleResize);
 
+    const onResize = handleResize(dispatch);
     const onPointerMove = handlePointerMove(dispatch);
     const onPointerDown = handlePointerDown(dispatch);
     const onPointerUp = handlePointerUp(dispatch);
 
+    window.addEventListener("resize", onResize);
     window.addEventListener("pointermove", onPointerMove);
     window.addEventListener("pointerdown", onPointerDown);
     window.addEventListener("pointerup", onPointerUp);
 
     return () => {
       window.removeEventListener("keyup", handleKeyup);
-      window.removeEventListener("resize", handleResize);
+      //
 
+      window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onPointerMove);
       window.removeEventListener("pointerdown", onPointerDown);
       window.removeEventListener("pointerup", onPointerUp);

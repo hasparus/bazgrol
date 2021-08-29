@@ -10,7 +10,6 @@
   import PointerPath from "./icons/PointerPath.svelte";
 
   import ToolbarButton from "./ToolbarButton.svelte";
-  import ShortcutText from "./ShortcutText.svelte";
 
   type ToolbarState = "toolbar" | "color-picker";
   let state: ToolbarState = "toolbar";
@@ -21,7 +20,6 @@
   const shortcuts: Record<string, UserActivity | ToolbarState> = {
     1: "pointer",
     2: "pencil",
-    t: "toolbar",
     c: "color-picker",
     Escape: "toolbar",
   };

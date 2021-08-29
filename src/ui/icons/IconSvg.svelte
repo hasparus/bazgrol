@@ -11,6 +11,7 @@
   height="24px"
   {style}
   {stroke}
+  {...$$props}
 >
   <slot />
 </svg>
