@@ -25,8 +25,7 @@ export const dispatch: Dispatch = (action): void => {
         let { currentMark, color: currentColor, activity } = state;
 
         if (activity === "pointer") {
-          // todo: selection
-          alert("selection is not implemented yet");
+          console.error("selection is not implemented yet");
           return;
         }
 
